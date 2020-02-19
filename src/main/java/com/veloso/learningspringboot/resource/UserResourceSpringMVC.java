@@ -14,19 +14,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.veloso.learningspringboot.model.User;
 import com.veloso.learningspringboot.service.UserService;
 
-@RestController
-@RequestMapping(path = "/api/v1/users")
-public class UserResource {
+//@RestController
+//@RequestMapping(path = "/api/v1/users")
+public class UserResourceSpringMVC {
 
 	private UserService userService;
 
 	@Autowired
-	public UserResource(UserService userService) {
+	public UserResourceSpringMVC(UserService userService) {
 		super();
 		this.userService = userService;
 	}
@@ -67,21 +66,4 @@ public class UserResource {
 		return ResponseEntity.badRequest().build();
 	}
 
-	class ErrorMessage {
-		String errorMessage;
-
-		public ErrorMessage(String message) {
-			super();
-			this.errorMessage = message;
-		}
-
-		public String getMessage() {
-			return errorMessage;
-		}
-
-		public void setMessage(String message) {
-			this.errorMessage = message;
-		}
-
-	}
 }
