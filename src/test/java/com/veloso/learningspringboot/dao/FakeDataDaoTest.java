@@ -6,23 +6,26 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import com.veloso.learningspringboot.model.User;
 import com.veloso.learningspringboot.model.User.Gender;
 
-class FakeDataDaoTest {
+public class FakeDataDaoTest {
 	
 	private FakeDataDao fakeDataDao;
+	
+	public FakeDataDaoTest() {
+	}
 
-	@BeforeEach
-	void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		fakeDataDao = new FakeDataDao();
 	}
 
 	@Test
-	void shouldSelectAllUsers() {
+	public void shouldSelectAllUsers() {
 		List<User> users = fakeDataDao.selectAllUsers();
 		assertThat(users).hasSize(1);
 		User user = users.get(0);
@@ -36,7 +39,7 @@ class FakeDataDaoTest {
 	}
 
 	@Test
-	void shouldSelectUserByUserUid() {
+	public void shouldSelectUserByUserUid() {
 		UUID annaUserUid = UUID.randomUUID();
 		User anna = new User(annaUserUid,"anna","montana", Gender.FEMALE, 30, "anna@gmail.com");
 		fakeDataDao.insertUser(annaUserUid, anna);
@@ -48,13 +51,13 @@ class FakeDataDaoTest {
 	}
 	
 	@Test
-	void shouldNotSelectUserByRandomUserUid() {
+	public void shouldNotSelectUserByRandomUserUid() {
 		Optional<User> user = fakeDataDao.selectUserByUserUid(UUID.randomUUID());
 		assertThat(user.isPresent()).isFalse();
 	}
 
 	@Test
-	void testUpdateUser() {
+	public void testUpdateUser() {
 		UUID joeUserUid =  fakeDataDao.selectAllUsers().get(0).getUserUid();
 		User newJoe = new User(joeUserUid,"anna","montana", Gender.FEMALE, 30, "anna@gmail.com");
 		fakeDataDao.updateUser(newJoe);
@@ -65,7 +68,7 @@ class FakeDataDaoTest {
 	}
 
 	@Test
-	void testDeleteUserByUserUid() {
+	public void testDeleteUserByUserUid() {
 		UUID joeUserUid =  fakeDataDao.selectAllUsers().get(0).getUserUid();
 		fakeDataDao.deleteUserByUserUid(joeUserUid);
 		assertThat(fakeDataDao.selectUserByUserUid(joeUserUid).isPresent()).isFalse();
@@ -73,7 +76,7 @@ class FakeDataDaoTest {
 	}
 
 	@Test
-	void testInsertUser() {
+	public void testInsertUser() {
 		UUID annaUserUid = UUID.randomUUID();
 		User anna = new User(annaUserUid,"anna","montana", Gender.FEMALE, 30, "anna@gmail.com");
 		fakeDataDao.insertUser(annaUserUid, anna);

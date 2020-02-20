@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.veloso.learningspringboot.model.User;
 import com.veloso.learningspringboot.service.UserService;
 
-@Path("/api/v1/users")
+@Path("api/v1/users")
 public class UserResourceResteasy {
 	
 	private UserService userService;

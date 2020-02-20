@@ -2,17 +2,17 @@ package com.veloso.learningspringboot.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -23,21 +23,25 @@ import com.veloso.learningspringboot.model.User.Gender;
 
 import jersey.repackaged.com.google.common.collect.ImmutableList;
 
-class UserServiceTest {
+public class UserServiceTest {
 
 	@Mock
 	private FakeDataDao fakeDataDao;
 
 	private UserService userService;
+	
+	public UserServiceTest() {
+		// TODO Auto-generated constructor stub
+	}
 
-	@BeforeEach
-	void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		userService = new UserService(fakeDataDao);
 	}
 
 	@Test
-	void shouldGetAllUsers() {
+	public void shouldGetAllUsers() {
 		UUID annaUserUid = UUID.randomUUID();
 		User anna = new User(annaUserUid, "anna", "montana", Gender.FEMALE, 30, "anna@gmail.com");
 
@@ -79,7 +83,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	void testGetUser() {
+	public void testGetUser() {
 		UUID annaUid = UUID.randomUUID();
 		User anna = new User(annaUid, "anna", "montana", Gender.FEMALE, 30, "anna@gmail.com");
 
@@ -95,7 +99,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	void testUpdateUser() {
+	public void testUpdateUser() {
 		UUID annaUid = UUID.randomUUID();
 		User anna = new User(annaUid, "anna", "montana", Gender.FEMALE, 30, "anna@gmail.com");
 
@@ -117,7 +121,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	void testRemoveUser() {
+	public void testRemoveUser() {
 		UUID annaUid = UUID.randomUUID();
 		User anna = new User(annaUid, "anna", "montana", Gender.FEMALE, 30, "anna@gmail.com");
 
@@ -133,7 +137,7 @@ class UserServiceTest {
 	}
 
 	@Test
-	void testInsertUser() {
+	public void testInsertUser() {
 		User anna = new User(null, "anna", "montana", Gender.FEMALE, 30, "anna@gmail.com");
 
 		given(fakeDataDao.insertUser(any(UUID.class),eq(anna))).willReturn(1);
@@ -148,10 +152,10 @@ class UserServiceTest {
 		
 		assertAnnaFields(user);
 		
-//		assertThat(insertResult).isEqualTo(1);
+		//assertThat(insertResult).isEqualTo(1);
 	}
 	
-	private void assertAnnaFields(User user) {
+	public void assertAnnaFields(User user) {
 		assertThat(user.getAge()).isEqualTo(30);
 		assertThat(user.getFirstName()).isEqualTo("anna");
 		assertThat(user.getLastName()).isEqualTo("montana");
