@@ -19,11 +19,13 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import com.veloso.learningspringboot.model.User;
 import com.veloso.learningspringboot.service.UserService;
 
+@Component
 @Path("api/v1/users")
 public class UserResourceResteasy {
 	
