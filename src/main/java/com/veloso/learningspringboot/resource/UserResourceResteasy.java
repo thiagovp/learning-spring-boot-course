@@ -6,81 +6,70 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.validation.annotation.Validated;
 
 import com.veloso.learningspringboot.model.User;
 import com.veloso.learningspringboot.service.UserService;
 
 @Component
+@Validated
 @Path("api/v1/users")
 public class UserResourceResteasy {
-	
+
 	private UserService userService;
 
 	@Autowired
 	public UserResourceResteasy(UserService userService) {
 		this.userService = userService;
 	}
-	
+
 	@GET
 	@Produces(APPLICATION_JSON)
 	public List<User> fetchUsers(@QueryParam("gender") String gender) {
 		return userService.getAllUsers(Optional.ofNullable(gender));
 	}
-	
+
 	@PUT
 	@Consumes(APPLICATION_JSON)
 	@Produces(APPLICATION_JSON)
-	public Response updateUser(@RequestBody User user) {
-		int result = userService.updateUser(user);
-		return getIntegerResponseEntity(result);
+	public void updateUser(User user) {
+		userService.updateUser(user);
 	}
-	
+
 	@DELETE
 	@Consumes(APPLICATION_JSON)
 	@Produces(APPLICATION_JSON)
 	@Path("{userUid}")
-	public Response deleteUser(@PathParam("userUid") UUID userUid) {
-		int result = userService.removeUser(userUid);
-		return getIntegerResponseEntity(result);
+	public void deleteUser(@PathParam("userUid") UUID userUid) {
+		userService.removeUser(userUid);
 	}
+
 	@GET
 	@Produces(APPLICATION_JSON)
 	@Path("{userUid}")
-	public Response fetchUser(@PathParam("userUid") UUID userUid) {
-		return userService.getUser(userUid).map(Response::ok).orElseGet(() -> Response
-				.status(Status.NOT_FOUND).entity(new ErrorMessage("user " + userUid + " was not found."))).build();
+	public User fetchUser(@PathParam("userUid") UUID userUid) {
+		return userService.getUser(userUid).orElseThrow(() -> new NotFoundException("user " + userUid + " not found"));
 	}
 
 	@POST
 	@Consumes(APPLICATION_JSON)
 	@Produces(APPLICATION_JSON)
-	public Response insertNewUser(@RequestBody User user) {
-		int result = userService.insertUser(user);
-		return getIntegerResponseEntity(result);
+	public void insertNewUser(@Valid User user) {
+		userService.insertUser(user);
 	}
-
-	private Response getIntegerResponseEntity(int result) {
-		if (result == 1) {
-			return Response.ok().build();
-		}
-		return Response.status(Status.BAD_REQUEST).build();
-	}
-
-	
 
 }
